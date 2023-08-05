@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-picsposter-dev-194519-authRole",
+      "UnauthRoleArn": "arn:aws:iam::546333979022:role/amplify-picsposter-dev-194519-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::546333979022:role/amplify-picsposter-dev-194519-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-picsposter-dev-194519-deployment",
+      "UnauthRoleName": "amplify-picsposter-dev-194519-unauthRole",
+      "StackName": "amplify-picsposter-dev-194519",
+      "StackId": "arn:aws:cloudformation:us-east-1:546333979022:stack/amplify-picsposter-dev-194519/c34dfb70-33e1-11ee-8656-0ad99461e69d",
+      "AmplifyAppId": "d9qqnmo0p3lnj"
+    },
+    "categories": {
+      "api": {
+        "picsposter": {}
+      }
+    }
+  }
+}
