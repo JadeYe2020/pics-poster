@@ -12,13 +12,13 @@ const validate = (values) => {
   const errors = {};
 
   if (!values.email) {
-    errors.email = 'Required';
+    errors.email = 'Please enter your email';
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
     errors.email = 'Invalid email address';
   }
 
   if (!values.password) {
-    errors.password = 'Required';
+    errors.password = 'Please enter the password';
   } else if (!/^[a-zA-Z0-9]{8,}$/.test(values.password)) {
     errors.password = 'Password has to be 8 characters long mix of letters and numbers';
   }
@@ -67,7 +67,7 @@ const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   // const loggedInUser = useSelector(state => state.user);
 
-  const handleLogin = async (values) => {
+  const handleLogin = async (values, actions) => {
     try {
       // console.log(values)
       const { email, password } = values;
@@ -81,10 +81,16 @@ const LoginScreen = ({ navigation }) => {
           if (userFromDB.password === hashed) {
             // update state of user
             dispatch(setLoggedInUser({ email: userFromDB.email, password: userFromDB.password }));
+            actions.resetForm({
+              values: { ...values, password: "" }
+            });
             // navigate to Posts screen
             navigation.navigate("Posts");
           } else {
             Alert.alert("Wrong password", "Please re-enter your password.");
+            actions.resetForm({
+              values: { ...values, password: "" }
+            });
           }
         } else {
           // the email has not been registered before, create a new user
@@ -112,7 +118,7 @@ const LoginScreen = ({ navigation }) => {
         password: "",
       }}
       validate={validate}
-      onSubmit={values => handleLogin(values)}
+      onSubmit={(values, actions) => handleLogin(values, actions)}
     >
       {({ handleChange, handleBlur, handleSubmit, handleReset, values, errors, touched }) => (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -177,8 +183,8 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 20,
     backgroundColor: "green",
-    width: '90%',
-    height: 60,
+    width: 120,
+    height: 50,
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',

@@ -36,8 +36,9 @@ const App = () => {
         headerTintColor: "green",
         headerTitleStyle: { fontSize: 30 },
         headerStyle: { backgroundColor: "#fff" },
+        headerBackVisible: false,
       }}>
-        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} title="Login" />
         <Stack.Screen name="Posts" component={PostsScreen} />
         <Stack.Screen name="Upload" component={UploadScreen} />
       </Stack.Navigator>
