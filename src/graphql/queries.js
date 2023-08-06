@@ -11,6 +11,7 @@ export const getUser = /* GraphQL */ `
         items {
           id
           img
+          userID
           createdAt
           updatedAt
           userPostsId
@@ -54,6 +55,7 @@ export const getPost = /* GraphQL */ `
     getPost(id: $id) {
       id
       img
+      userID
       author {
         id
         email
@@ -83,6 +85,7 @@ export const listPosts = /* GraphQL */ `
       items {
         id
         img
+        userID
         author {
           id
           email
@@ -126,6 +129,43 @@ export const usersByEmail = /* GraphQL */ `
         }
         createdAt
         updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const postsByUserID = /* GraphQL */ `
+  query PostsByUserID(
+    $userID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelPostFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    postsByUserID(
+      userID: $userID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        img
+        userID
+        author {
+          id
+          email
+          password
+          createdAt
+          updatedAt
+          __typename
+        }
+        createdAt
+        updatedAt
+        userPostsId
         __typename
       }
       nextToken

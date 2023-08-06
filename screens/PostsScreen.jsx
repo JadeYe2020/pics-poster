@@ -1,42 +1,51 @@
-import { StyleSheet, View, Text, Pressable, FlatList } from "react-native";
-import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, View, Text, Pressable, FlatList, Image } from "react-native";
+import { Storage, API, graphqlOperation } from "aws-amplify";
 import { useSelector, useDispatch } from "react-redux";
 import { logOutUser } from "../reducers/userReducer";
+import { listPosts } from "../src/graphql/queries";
+import { useEffect, useState } from "react";
+import Post from "../components/Post";
+
 
 const PostsScreen = ({ navigation }) => {
   const loggedInUser = useSelector(state => state.user);
   const dispatch = useDispatch();
+  const [allPosts, setAllPosts] = useState([]);
+
+  const downloadImage = (item) => {
+    Storage.get(item.img)
+      .then((result) => item.image = result)
+      .catch((err) => console.log(err));
+  };
+
+  const getAllPosts = async () => {
+    let result = null;
+    try {
+      const res = await API.graphql(graphqlOperation(listPosts));
+      if (res) {
+        result = res.data.listPosts.items;
+        setAllPosts(result);
+      }
+    } catch (error) {
+      console.log("error from getAllPosts()", error.errors[0].message);
+    }
+    return result;
+  }
+
+  useEffect(() => {
+    getAllPosts();
+  }, [])
+
+  console.log("allPosts", allPosts);
 
   const logOut = () => {
     dispatch(logOutUser());
     navigation.navigate("Login");
   }
 
-  const allPosts = [
-    {
-      createdAt: new Date(2023, 8, 6).toLocaleString(),
-      author: {
-        email: "sample@s.ca",
-      },
-      img: "uri"
-    },
-    {
-      createdAt: new Date(2023, 8, 6).toLocaleString(),
-      author: {
-        email: "sample2@s.ca",
-      },
-      img: "uri"
-    },
-  ]
 
   const renderItem = ({ item }) => {
-    return (
-      <View style={{ borderColor: "grey" }}>
-        <Text>{item.author.email}</Text>
-        <Text>{item.createdAt}</Text>
-        <Text>{item.img}</Text>
-      </View>
-    )
+    return <Post item={item} />
   }
 
   return (
@@ -47,7 +56,6 @@ const PostsScreen = ({ navigation }) => {
           <Text style={styles.buttonText}>New Post</Text>
         </Pressable>
       </View>
-      <Text>Email: {loggedInUser?.email}</Text>
 
       <FlatList
         data={allPosts}

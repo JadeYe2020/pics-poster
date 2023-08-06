@@ -14,6 +14,12 @@
     "categories": {
       "api": {
         "picsposter": {}
+      },
+      "auth": {
+        "picsposterc4648d9f": {}
+      },
+      "storage": {
+        "picspickerauth": {}
       }
     }
   }

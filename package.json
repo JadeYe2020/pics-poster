@@ -25,7 +25,8 @@
     "react-native-screens": "~3.22.0",
     "react-native-sha256": "^1.4.9",
     "react-redux": "^8.1.2",
-    "redux": "^4.2.1"
+    "redux": "^4.2.1",
+    "expo-image-picker": "~14.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

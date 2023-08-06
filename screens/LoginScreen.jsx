@@ -80,7 +80,7 @@ const LoginScreen = ({ navigation }) => {
           // when the email has been registered, compare the passwords
           if (userFromDB.password === hashed) {
             // update state of user
-            dispatch(setLoggedInUser({ email: userFromDB.email, password: userFromDB.password }));
+            dispatch(setLoggedInUser({ email: userFromDB.email, id: userFromDB.id }));
             actions.resetForm({
               values: { ...values, password: "" }
             });
@@ -99,7 +99,7 @@ const LoginScreen = ({ navigation }) => {
           promiseFromCreate.then(newUser => {
             // console.log("newUser", newUser)
             // update state of user
-            dispatch(setLoggedInUser(newUser));
+            dispatch(setLoggedInUser({ email: newUser.email, id: newUser.id }));
             // navigate to Posts screen
             navigation.navigate("Posts");
           })

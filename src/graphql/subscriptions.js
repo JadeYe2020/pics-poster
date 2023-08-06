@@ -11,6 +11,7 @@ export const onCreateUser = /* GraphQL */ `
         items {
           id
           img
+          userID
           createdAt
           updatedAt
           userPostsId
@@ -35,6 +36,7 @@ export const onUpdateUser = /* GraphQL */ `
         items {
           id
           img
+          userID
           createdAt
           updatedAt
           userPostsId
@@ -59,6 +61,7 @@ export const onDeleteUser = /* GraphQL */ `
         items {
           id
           img
+          userID
           createdAt
           updatedAt
           userPostsId
@@ -78,6 +81,7 @@ export const onCreatePost = /* GraphQL */ `
     onCreatePost(filter: $filter) {
       id
       img
+      userID
       author {
         id
         email
@@ -102,6 +106,7 @@ export const onUpdatePost = /* GraphQL */ `
     onUpdatePost(filter: $filter) {
       id
       img
+      userID
       author {
         id
         email
@@ -126,6 +131,7 @@ export const onDeletePost = /* GraphQL */ `
     onDeletePost(filter: $filter) {
       id
       img
+      userID
       author {
         id
         email
