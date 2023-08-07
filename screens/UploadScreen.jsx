@@ -5,10 +5,13 @@ import * as ImagePicker from 'expo-image-picker';
 import { useSelector, useDispatch } from "react-redux";
 import { createPost } from "../src/graphql/mutations";
 import ThemePicker from "../components/ThemePicker";
+import theme from "../theme";
 
 
 const UploadScreen = ({ navigation }) => {
   const loggedInUser = useSelector(state => state.user);
+  const themeMode = useSelector(state => state.themeMode);
+
   console.log("loggedInUser", loggedInUser);
   const [image, setImage] = useState(null);
 
@@ -80,15 +83,15 @@ const UploadScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, themeMode === "DARK" && styles.darkModeContainer]}>
       <Text style={styles.title}>SavorHub</Text>
       <ThemePicker />
       <Text style={[styles.subtitle, { marginTop: 100 }]}>New Post</Text>
-      <Text>Email: {loggedInUser?.email}</Text>
+      {/* <Text>Email: {loggedInUser?.email}</Text> */}
       <View style={{ height: "50%" }}>
         {image ? <Image source={{ uri: image }} style={{ width: 400, height: 300 }} />
           : <View>
-            <Text style={{ color: "green", fontSize: 20, textAlign: "center" }}>Image</Text>
+            <Text style={{ color: theme.colors.primary, fontSize: 20, textAlign: "center" }}>Image</Text>
             <Pressable style={[styles.button, { flex: 0 }]} onPress={pickImage} >
               <Text style={styles.buttonText}>Select</Text>
             </Pressable>
@@ -110,14 +113,17 @@ const UploadScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.lightBackground,
     alignItems: 'center',
     justifyContent: 'flex-start',
+  },
+  darkModeContainer: {
+    backgroundColor: theme.colors.darkBackground,
   },
   title: {
     position: "absolute",
     top: 50,
-    color: "green",
+    color: theme.colors.primary,
     fontSize: 30,
     fontWeight: "bold",
     textAlign: "center",
@@ -126,7 +132,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   subtitle: {
-    color: "green",
+    color: theme.colors.primary,
     fontSize: 30,
     alignSelf: "flex-start",
     margin: 20,
@@ -134,7 +140,7 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
     margin: 20,
-    backgroundColor: "green",
+    backgroundColor: theme.colors.primary,
     width: 120,
     height: 50,
     alignItems: 'center',

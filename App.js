@@ -7,16 +7,19 @@ import userReducer from "./reducers/userReducer";
 import LoginScreen from './screens/LoginScreen';
 import PostsScreen from './screens/PostsScreen';
 import UploadScreen from './screens/UploadScreen';
-import ThemePicker from "./components/ThemePicker";
 import { Amplify } from 'aws-amplify';
 import awsExports from './src/aws-exports';
-import { FlatListComponent } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from "react-redux";
+import themeReducer, { setThemeMode } from "./reducers/themeReducer";
+import { useEffect } from "react";
 Amplify.configure(awsExports);
 
 // redux state management
 const store = configureStore({
   reducer: {
     user: userReducer,
+    themeMode: themeReducer,
   }
 })
 
@@ -31,6 +34,23 @@ const AppWrapper = () => {
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+  const dispatch = useDispatch();
+
+  const getStoredThemeValue = async () => {
+    try {
+      const value = await AsyncStorage.getItem('my-theme');
+      if (value !== null) {        
+        dispatch(setThemeMode(value));
+      }
+    } catch (e) {
+      console.log("error reading value", e);
+    }
+  };
+
+  useEffect(() => {
+    getStoredThemeValue();
+  }, [])
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login" screenOptions={({ navigation }) => (

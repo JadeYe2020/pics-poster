@@ -3,14 +3,17 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Storage, API, graphqlOperation } from "aws-amplify";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setThemeMode } from "../reducers/themeReducer";
 
 export default ThemePicker = () => {
+  const dispatch = useDispatch();
+  const themeState = useSelector(state => state.themeMode);
+
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
-    {
-      label: 'Light', value: 'LIGHT',
-    },
+    { label: 'Light', value: 'LIGHT' },
     { label: 'Dark', value: 'DARK' }
   ]);
   
@@ -26,29 +29,15 @@ export default ThemePicker = () => {
     await storeValue(value);
     DropDownPicker.setTheme(value);
     setValue(value);
+    dispatch(setThemeMode(value));
   }
 
-  const getStoredValue = async () => {
-    try {
-      const value = await AsyncStorage.getItem('my-theme');
-      if (value !== null) {        
-        DropDownPicker.setTheme(value);
-      }
-    } catch (e) {
-      console.log("error reading value", e);
-    }
-  };
-
-  useEffect(() => {
-    getStoredValue();
-  }, [])
-
-  if (value) {
-    DropDownPicker.setTheme(value);
+  if (themeState) {
+    DropDownPicker.setTheme(themeState);
   }
 
   return (
-    <View style={{ position: "absolute", top: 50, right: 10, zIndex: 1000 }}>
+    <View style={{ position: "absolute", top: 55, right: 10, zIndex: 1000 }}>
       <DropDownPicker
         open={open}
         value={value}

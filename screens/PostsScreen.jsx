@@ -4,20 +4,22 @@ import { useSelector, useDispatch } from "react-redux";
 import { logOutUser } from "../reducers/userReducer";
 import { listPosts } from "../src/graphql/queries";
 import { useEffect, useState } from "react";
+import theme from "../theme";
 import Post from "../components/Post";
 import ThemePicker from "../components/ThemePicker";
 
 
 const PostsScreen = ({ navigation }) => {
   const loggedInUser = useSelector(state => state.user);
+  const themeMode = useSelector(state => state.themeMode);
   const dispatch = useDispatch();
   const [allPosts, setAllPosts] = useState([]);
 
-  const downloadImage = (item) => {
-    Storage.get(item.img)
-      .then((result) => item.image = result)
-      .catch((err) => console.log(err));
-  };
+  // const downloadImage = (item) => {
+  //   Storage.get(item.img)
+  //     .then((result) => item.image = result)
+  //     .catch((err) => console.log(err));
+  // };
 
   const getAllPosts = async () => {
     let result = null;
@@ -42,13 +44,12 @@ const PostsScreen = ({ navigation }) => {
     navigation.navigate("Login");
   }
 
-
   const renderItem = ({ item }) => {
-    return <Post item={item} />
+    return <Post item={item} themeMode={themeMode} />
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, themeMode === "DARK" && styles.darkModeContainer]}>
       <Text style={styles.title}>SavorHub</Text>
       <ThemePicker />
 
@@ -76,13 +77,16 @@ const PostsScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.lightBackground,
     alignItems: 'center',
+  },
+  darkModeContainer: {
+    backgroundColor: theme.colors.darkBackground,
   },
   title: {
     position: "absolute",
     top: 50,
-    color: "green",
+    color: theme.colors.primary,
     fontSize: 30,
     fontWeight: "bold",
     textAlign: "center",
@@ -92,13 +96,13 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     flex: 1,
-    color: "green",
+    color: theme.colors.primary,
     fontSize: 30,
     alignSelf: "auto",
   },
   button: {
     flex: 0,
-    backgroundColor: "green",
+    backgroundColor: theme.colors.primary,
     width: 120,
     height: 45,
     alignItems: 'center',
