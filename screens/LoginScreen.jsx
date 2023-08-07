@@ -6,6 +6,7 @@ import { usersByEmail } from "../src/graphql/queries";
 import { createUser } from "../src/graphql/mutations";
 import { useSelector, useDispatch } from 'react-redux';
 import { setLoggedInUser } from "../reducers/userReducer";
+import ThemePicker from "../components/ThemePicker";
 
 // to validate input
 const validate = (values) => {
@@ -123,6 +124,8 @@ const LoginScreen = ({ navigation }) => {
       {({ handleChange, handleBlur, handleSubmit, handleReset, values, errors, touched }) => (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+            <Text style={styles.title}>SavorHub</Text>
+            <ThemePicker />
             <View style={{ gap: 15 }}>
               <View>
                 <Text style={styles.label}>Email</Text>
@@ -168,6 +171,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'stretch',
     justifyContent: 'center',
+  },
+  title: {
+    position: "absolute",
+    top: 50,
+    color: "green",
+    fontSize: 30,
+    fontWeight: "bold",
+    textAlign: "center",
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center"
   },
   inputBox: {
     height: 50,

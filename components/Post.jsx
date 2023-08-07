@@ -1,18 +1,23 @@
-import { StyleSheet, View, Text, Pressable, FlatList, Image } from "react-native";
+import { StyleSheet, View, Text, Pressable, FlatList, Image, ActivityIndicator } from "react-native";
 import { Storage, API, graphqlOperation } from "aws-amplify";
 import { useEffect, useState } from "react";
 
 const Post = ({ item }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [image, setImage] = useState(null);
 
-  const downloadImage = async (item) => {
+  const downloadImage = async () => {
+    setIsLoading(true);
     const result = await Storage.get(item.img)
-    console.log("result", result);
-    setImage(result);
+    // console.log("result", result);
+    if (result) {
+      setImage(result);
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
-    downloadImage(item);
+    downloadImage();
   }, [])
 
   const dateTime = new Date(item.createdAt);
@@ -25,7 +30,10 @@ const Post = ({ item }) => {
     <View style={{ borderColor: "grey" }}>
       <Text>{item.author.email}</Text>
       <Text>{formated}</Text>
-      <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />
+      {!isLoading ?
+        <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />
+        : <ActivityIndicator color="green" />
+      }
     </View>
   )
 }

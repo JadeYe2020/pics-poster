@@ -5,6 +5,7 @@ import { logOutUser } from "../reducers/userReducer";
 import { listPosts } from "../src/graphql/queries";
 import { useEffect, useState } from "react";
 import Post from "../components/Post";
+import ThemePicker from "../components/ThemePicker";
 
 
 const PostsScreen = ({ navigation }) => {
@@ -36,8 +37,6 @@ const PostsScreen = ({ navigation }) => {
     getAllPosts();
   }, [])
 
-  console.log("allPosts", allPosts);
-
   const logOut = () => {
     dispatch(logOutUser());
     navigation.navigate("Login");
@@ -50,7 +49,10 @@ const PostsScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: "row", alignItems: "flex-end", justifyContent: "space-between", padding: 20, }}>
+      <Text style={styles.title}>SavorHub</Text>
+      <ThemePicker />
+
+      <View style={{ marginTop: 100, flexDirection: "row", alignItems: "center", alignSelf: "flex-start", padding: 10 }}>
         <Text style={styles.subtitle}>Posts</Text>
         <Pressable style={styles.button} onPress={() => navigation.navigate("Upload")}>
           <Text style={styles.buttonText}>New Post</Text>
@@ -77,12 +79,28 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
   },
-  subtitle: { flex: 1, color: "green", fontSize: 30 },
+  title: {
+    position: "absolute",
+    top: 50,
+    color: "green",
+    fontSize: 30,
+    fontWeight: "bold",
+    textAlign: "center",
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  subtitle: {
+    flex: 1,
+    color: "green",
+    fontSize: 30,
+    alignSelf: "auto",
+  },
   button: {
     flex: 0,
     backgroundColor: "green",
     width: 120,
-    height: 50,
+    height: 45,
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',

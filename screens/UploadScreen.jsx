@@ -4,6 +4,7 @@ import { StyleSheet, View, Text, Pressable, Image, Alert } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import { useSelector, useDispatch } from "react-redux";
 import { createPost } from "../src/graphql/mutations";
+import ThemePicker from "../components/ThemePicker";
 
 
 const UploadScreen = ({ navigation }) => {
@@ -80,7 +81,9 @@ const UploadScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.subtitle}>New Post</Text>
+      <Text style={styles.title}>SavorHub</Text>
+      <ThemePicker />
+      <Text style={[styles.subtitle, { marginTop: 100 }]}>New Post</Text>
       <Text>Email: {loggedInUser?.email}</Text>
       <View style={{ height: "50%" }}>
         {image ? <Image source={{ uri: image }} style={{ width: 400, height: 300 }} />
@@ -100,7 +103,7 @@ const UploadScreen = ({ navigation }) => {
           <Text style={styles.buttonText}>Post</Text>
         </Pressable>
       </View>
-    </View>
+    </View >
   )
 }
 
@@ -110,6 +113,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'flex-start',
+  },
+  title: {
+    position: "absolute",
+    top: 50,
+    color: "green",
+    fontSize: 30,
+    fontWeight: "bold",
+    textAlign: "center",
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center"
   },
   subtitle: {
     color: "green",
