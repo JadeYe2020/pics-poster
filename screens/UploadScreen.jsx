@@ -12,7 +12,11 @@ const UploadScreen = ({ navigation }) => {
   const loggedInUser = useSelector(state => state.user);
   const themeMode = useSelector(state => state.themeMode);
 
-  console.log("loggedInUser", loggedInUser);
+  if (!loggedInUser) {
+    navigation.navigate("Login");
+  }
+
+  // console.log("loggedInUser", loggedInUser);
   const [image, setImage] = useState(null);
 
   const fetchImageFromUri = async (uri) => {

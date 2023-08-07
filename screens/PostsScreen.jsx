@@ -1,8 +1,9 @@
-import { StyleSheet, View, Text, Pressable, FlatList, Image } from "react-native";
-import { Storage, API, graphqlOperation } from "aws-amplify";
+import { StyleSheet, View, Text, Pressable, FlatList } from "react-native";
+import { API, graphqlOperation } from "aws-amplify";
 import { useSelector, useDispatch } from "react-redux";
 import { logOutUser } from "../reducers/userReducer";
 import { listPosts } from "../src/graphql/queries";
+import { onCreatePost } from "../src/graphql/subscriptions";
 import { useEffect, useState } from "react";
 import theme from "../theme";
 import Post from "../components/Post";
@@ -15,18 +16,15 @@ const PostsScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const [allPosts, setAllPosts] = useState([]);
 
-  // const downloadImage = (item) => {
-  //   Storage.get(item.img)
-  //     .then((result) => item.image = result)
-  //     .catch((err) => console.log(err));
-  // };
-
   const getAllPosts = async () => {
     let result = null;
     try {
       const res = await API.graphql(graphqlOperation(listPosts));
       if (res) {
         result = res.data.listPosts.items;
+        result.sort((a, b) => {
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        })
         setAllPosts(result);
       }
     } catch (error) {
@@ -39,10 +37,28 @@ const PostsScreen = ({ navigation }) => {
     getAllPosts();
   }, [])
 
+  // subscription to update the view when new post is uploaded
+  useEffect(() => {
+    const createSub = API.graphql(graphqlOperation(onCreatePost)).subscribe({
+      next: data => {
+        getAllPosts();
+      },
+      error: error => console.warn('error from Sub onCreatePost', error),
+    });
+
+    return () => createSub.unsubscribe();
+  }, [])
+
+
+  if (!loggedInUser) {
+    navigation.navigate("Login");
+  }
+
   const logOut = () => {
     dispatch(logOutUser());
     navigation.navigate("Login");
   }
+
 
   const renderItem = ({ item }) => {
     return <Post item={item} themeMode={themeMode} />

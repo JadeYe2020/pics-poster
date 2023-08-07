@@ -27,14 +27,19 @@ export default ThemePicker = () => {
 
   const changeTheme = async (value) => {
     await storeValue(value);
+
     DropDownPicker.setTheme(value);
     setValue(value);
     dispatch(setThemeMode(value));
   }
 
-  if (themeState) {
-    DropDownPicker.setTheme(themeState);
-  }
+  // set the theme and show current value
+  useEffect(() => {
+    if (themeState) {
+      DropDownPicker.setTheme(themeState);
+      setValue(themeState);
+    }
+  }, [themeState])
 
   return (
     <View style={{ position: "absolute", top: 55, right: 10, zIndex: 1000 }}>
