@@ -41,7 +41,14 @@ const PostsScreen = ({ navigation }) => {
   useEffect(() => {
     const createSub = API.graphql(graphqlOperation(onCreatePost)).subscribe({
       next: data => {
-        getAllPosts();
+        const newPost = data.value.data.onCreatePost;
+        if (newPost && allPosts.length > 0) {
+          console.log("Add newPost on top.");
+          const updatedArray = [newPost, ...allPosts];
+          setAllPosts(updatedArray);
+        } else {
+          getAllPosts();
+        }
       },
       error: error => console.warn('error from Sub onCreatePost', error),
     });
@@ -76,13 +83,16 @@ const PostsScreen = ({ navigation }) => {
         </Pressable>
       </View>
 
+      {allPosts.length === 0 &&
+         <Text style={{color: theme.colors.primary, fontSize: 15, textAlign: "center"}}>{'No posts yet.\nPress "New Post" to upload a new post.'}</Text>
+      }
+
       <View style={styles.flexContainer}>
         <FlatList
           data={allPosts}
           renderItem={renderItem}
         />
       </View>
-
 
       <View style={{ position: "absolute", alignSelf: "center", bottom: 50 }}>
         <Pressable style={styles.button} onPress={logOut}>
