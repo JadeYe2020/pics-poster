@@ -20,8 +20,24 @@ const UploadScreen = ({ navigation }) => {
   const [image, setImage] = useState(null);
 
   const fetchImageFromUri = async (uri) => {
-    const response = await fetch(uri);
-    const blob = await response.blob();
+    // const response = await fetch(uri);
+    // console.log("response", response);
+    // const blob = await response.blob();
+
+    // referring to android error issue's solution https://github.com/expo/expo/issues/2402
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function() {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function() {
+        reject(new TypeError('Network request failed'));
+      };
+      xhr.responseType = 'blob';
+      xhr.open('GET', uri, true);
+      xhr.send(null);
+    });
+
     return blob;
   };
 
@@ -59,7 +75,8 @@ const UploadScreen = ({ navigation }) => {
         const filename = uri.slice(-16);
         const imgBlob = await fetchImageFromUri(uri);
         const uploadUrl = await uploadImage(filename, imgBlob);
-        console.log("uploadUrl", uploadUrl);
+        // console.log("uploadUrl", uploadUrl);
+
         // create a new post with the stored file key and return to Posts screen
         const result = await createNewPost(uploadUrl);
         console.log("result from createNewPost", result);
@@ -67,7 +84,7 @@ const UploadScreen = ({ navigation }) => {
         result && navigation.navigate("Posts");
       }
     } catch (e) {
-      console.log(e);
+      console.log("errors from handleImagePicked()", e);
       Alert.alert("Upload failed");
     }
   };
@@ -77,7 +94,7 @@ const UploadScreen = ({ navigation }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 0.5,
+      quality: 0.1,
     });
 
     // console.log(result);
@@ -90,12 +107,12 @@ const UploadScreen = ({ navigation }) => {
     <View style={[styles.container, themeMode === "DARK" && styles.darkModeContainer]}>
       <Text style={styles.title}>SavorHub</Text>
       <ThemePicker />
-      <Text style={[styles.subtitle, { marginTop: 100 }]}>New Post</Text>
+      <Text style={styles.subtitle}>New Post</Text>
       <View style={{ height: "50%" }}>
         {image ? <Image source={{ uri: image }} style={{ width: 400, height: 300 }} />
           : <View>
             <Text style={{ color: theme.colors.primary, fontSize: 20, textAlign: "center" }}>Image</Text>
-            <Pressable style={[styles.button, { flex: 0 }]} onPress={pickImage} >
+            <Pressable style={styles.button} onPress={pickImage} >
               <Text style={styles.buttonText}>Select</Text>
             </Pressable>
           </View>
@@ -127,7 +144,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 50,
     color: theme.colors.primary,
-    fontSize: 30,
+    fontSize: theme.fontSizes.title,
     fontWeight: "bold",
     textAlign: "center",
     alignSelf: "center",
@@ -136,12 +153,13 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     color: theme.colors.primary,
-    fontSize: 30,
+    fontSize: theme.fontSizes.title,
     alignSelf: "flex-start",
-    margin: 10,
+    marginLeft: 10,
+    marginTop: 100,
   },
   button: {
-    flex: 1,
+    flex: 0,
     margin: 20,
     backgroundColor: theme.colors.primary,
     width: 120,
