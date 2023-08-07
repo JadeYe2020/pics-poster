@@ -1,5 +1,6 @@
 import { StyleSheet, View, Text, Pressable, FlatList, Image, ActivityIndicator } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Storage, API, graphqlOperation } from "aws-amplify";
 import { useEffect, useState } from "react";
 
@@ -12,13 +13,42 @@ export default ThemePicker = () => {
     },
     { label: 'Dark', value: 'DARK' }
   ]);
+  
+  const storeValue = async (value) => {
+    try {
+      await AsyncStorage.setItem('my-theme', value);
+    } catch (e) {
+      console.log("saving error", e);
+    }
+  };
+
+  const changeTheme = async (value) => {
+    await storeValue(value);
+    DropDownPicker.setTheme(value);
+    setValue(value);
+  }
+
+  const getStoredValue = async () => {
+    try {
+      const value = await AsyncStorage.getItem('my-theme');
+      if (value !== null) {        
+        DropDownPicker.setTheme(value);
+      }
+    } catch (e) {
+      console.log("error reading value", e);
+    }
+  };
+
+  useEffect(() => {
+    getStoredValue();
+  }, [])
 
   if (value) {
     DropDownPicker.setTheme(value);
   }
 
   return (
-    <View style={{ position: "absolute", top: 50, right: 10 }}>
+    <View style={{ position: "absolute", top: 50, right: 10, zIndex: 1000 }}>
       <DropDownPicker
         open={open}
         value={value}
@@ -26,8 +56,9 @@ export default ThemePicker = () => {
         setOpen={setOpen}
         setValue={setValue}
         setItems={setItems}
+        onChangeValue={changeTheme}
         placeholder="Theme"
-        style={{ minHeight: 40, width: 100 }}
+        style={{ minHeight: 30, width: 100 }}
         zIndex={1000}
       />
     </View>
