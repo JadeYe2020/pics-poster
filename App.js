@@ -1,4 +1,3 @@
-import { StyleSheet, View } from "react-native";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { configureStore } from '@reduxjs/toolkit';
@@ -56,11 +55,6 @@ const App = () => {
       <Stack.Navigator initialRouteName="Login" screenOptions={({ navigation }) => (
         {
           headerShown: false,
-          // title: "SavorHub",
-          // headerTintColor: "green",
-          // headerTitleStyle: { fontSize: 30 },
-          // headerTitleAlign: "center",
-          // headerStyle: { backgroundColor: "#fff" },
           headerBackVisible: false,
         })}>
 

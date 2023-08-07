@@ -1,7 +1,6 @@
-import { StyleSheet, View, Text, Pressable, FlatList, Image, ActivityIndicator } from "react-native";
+import { View } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Storage, API, graphqlOperation } from "aws-amplify";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setThemeMode } from "../reducers/themeReducer";
@@ -57,36 +56,4 @@ export default ThemePicker = () => {
       />
     </View>
   );
-
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-  },
-  subtitle: {
-    position: "absolute",
-    top: 50,
-    color: "green",
-    fontSize: 30,
-    textAlign: "center",
-    alignSelf: "center",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  button: {
-    flex: 0,
-    backgroundColor: "green",
-    width: 120,
-    height: 45,
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    borderRadius: 10,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 20,
-  },
-});

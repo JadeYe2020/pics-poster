@@ -6,6 +6,7 @@ import { usersByEmail } from "../src/graphql/queries";
 import { createUser } from "../src/graphql/mutations";
 import { useSelector, useDispatch } from 'react-redux';
 import { setLoggedInUser } from "../reducers/userReducer";
+import theme from "../theme";
 
 // to validate input
 const validate = (values) => {
@@ -173,8 +174,8 @@ const styles = StyleSheet.create({
   title: {
     position: "absolute",
     top: 50,
-    color: "green",
-    fontSize: 30,
+    color: theme.colors.primary,
+    fontSize: theme.fontSizes.title,
     fontWeight: "bold",
     textAlign: "center",
     alignSelf: "center",
@@ -194,7 +195,7 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
     margin: 20,
-    backgroundColor: "green",
+    backgroundColor: theme.colors.primary,
     width: 120,
     height: 50,
     alignItems: 'center',
@@ -207,13 +208,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   label: {
-    color: "green",
+    color: theme.colors.primary,
     fontSize: 25,
     textAlign: "center",
   },
   errorText: {
     color: "red",
-    marginLeft: 20,
+    marginLeft: 21,
+    marginTop: -5,
   },
 });
 

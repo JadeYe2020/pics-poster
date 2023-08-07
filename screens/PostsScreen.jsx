@@ -22,6 +22,7 @@ const PostsScreen = ({ navigation }) => {
       const res = await API.graphql(graphqlOperation(listPosts));
       if (res) {
         result = res.data.listPosts.items;
+        // sort posts by descending order
         result.sort((a, b) => {
           return new Date(b.createdAt) - new Date(a.createdAt);
         })
@@ -76,7 +77,7 @@ const PostsScreen = ({ navigation }) => {
       <Text style={styles.title}>SavorHub</Text>
       <ThemePicker />
 
-      <View style={{ marginTop: 100, flexDirection: "row", alignItems: "center", alignSelf: "flex-start", padding: 10 }}>
+      <View style={styles.headerContainer}>
         <Text style={styles.subtitle}>Posts</Text>
         <Pressable style={styles.button} onPress={() => navigation.navigate("Upload")}>
           <Text style={styles.buttonText}>New Post</Text>
@@ -84,7 +85,9 @@ const PostsScreen = ({ navigation }) => {
       </View>
 
       {allPosts.length === 0 &&
-         <Text style={{color: theme.colors.primary, fontSize: 15, textAlign: "center"}}>{'No posts yet.\nPress "New Post" to upload a new post.'}</Text>
+        <Text style={styles.spanText}>
+          {'No posts yet.\nPress "New Post" to upload a new post.'}
+        </Text>
       }
 
       <View style={styles.flexContainer}>
@@ -112,6 +115,13 @@ const styles = StyleSheet.create({
   darkModeContainer: {
     backgroundColor: theme.colors.darkBackground,
   },
+  headerContainer: { 
+    marginTop: 100, 
+    flexDirection: "row", 
+    alignItems: "center", 
+    alignSelf: "flex-start", 
+    padding: 10 
+  },
   flexContainer: {
     display: "flex",
     flexDirection: "column",
@@ -122,7 +132,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 50,
     color: theme.colors.primary,
-    fontSize: 30,
+    fontSize: theme.fontSizes.title,
     fontWeight: "bold",
     textAlign: "center",
     alignSelf: "center",
@@ -132,7 +142,7 @@ const styles = StyleSheet.create({
   subtitle: {
     flex: 1,
     color: theme.colors.primary,
-    fontSize: 30,
+    fontSize: theme.fontSizes.title,
     alignSelf: "auto",
   },
   button: {
@@ -149,6 +159,11 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 20,
   },
+  spanText: {
+    color: theme.colors.primary, 
+    fontSize: 15, 
+    textAlign: "center",
+  }
 });
 
 export default PostsScreen;
