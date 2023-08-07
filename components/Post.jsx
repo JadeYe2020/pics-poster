@@ -22,17 +22,25 @@ const Post = ({ item, themeMode }) => {
   }, [])
 
   const dateTime = new Date(item.createdAt);
-  const formated = dateTime.toLocaleString("en-US", {
-    dateStyle: "long",
-    timeStyle: "short",
+  const formatedDate = dateTime.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  })
+  const formatedTime = dateTime.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "numeric",
   })
 
   return (
     <View style={styles.container}>
-      <Text style={styles.emailText}>{item.author.email}</Text>
-      <Text style={themeMode === "DARK" && styles.textInDark}>{formated}</Text>
+      <View>
+        <Text style={styles.emailText}>{item.author.email}</Text>
+        <Text style={themeMode === "DARK" && styles.textInDark}>{formatedDate}</Text>
+        <Text style={themeMode === "DARK" && styles.textInDark}>{formatedTime}</Text>
+      </View>
       {!isLoading ?
-        <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />
+        <Image source={{ uri: image }} style={{ width: 80, height: 60, alignSelf: "flex-end" }} />
         : <ActivityIndicator color="green" />
       }
     </View>
@@ -41,11 +49,19 @@ const Post = ({ item, themeMode }) => {
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 1,  
-    BorderColor: "grey",
+    flex: 1,
+    alignSelf: "stretch",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderWidth: 1,
+    borderColor: "grey",
+    margin: 5,
+    padding: 10,
+    width: "auto",
   },
   emailText: {
     color: theme.colors.primary,
+    fontSize:18,
   },
   textInDark: {
     color: theme.colors.textInDark

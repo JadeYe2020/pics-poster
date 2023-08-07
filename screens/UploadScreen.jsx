@@ -91,7 +91,6 @@ const UploadScreen = ({ navigation }) => {
       <Text style={styles.title}>SavorHub</Text>
       <ThemePicker />
       <Text style={[styles.subtitle, { marginTop: 100 }]}>New Post</Text>
-      {/* <Text>Email: {loggedInUser?.email}</Text> */}
       <View style={{ height: "50%" }}>
         {image ? <Image source={{ uri: image }} style={{ width: 400, height: 300 }} />
           : <View>
@@ -139,7 +138,7 @@ const styles = StyleSheet.create({
     color: theme.colors.primary,
     fontSize: 30,
     alignSelf: "flex-start",
-    margin: 20,
+    margin: 10,
   },
   button: {
     flex: 1,

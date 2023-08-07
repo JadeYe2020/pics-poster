@@ -76,12 +76,15 @@ const PostsScreen = ({ navigation }) => {
         </Pressable>
       </View>
 
-      <FlatList
-        data={allPosts}
-        renderItem={renderItem}
-      />
+      <View style={styles.flexContainer}>
+        <FlatList
+          data={allPosts}
+          renderItem={renderItem}
+        />
+      </View>
 
-      <View style={{ position: "absolute", bottom: 50 }}>
+
+      <View style={{ position: "absolute", alignSelf: "center", bottom: 50 }}>
         <Pressable style={styles.button} onPress={logOut}>
           <Text style={styles.buttonText}>Log Out</Text>
         </Pressable>
@@ -94,10 +97,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.lightBackground,
-    alignItems: 'center',
+    alignItems: "stretch",
   },
   darkModeContainer: {
     backgroundColor: theme.colors.darkBackground,
+  },
+  flexContainer: {
+    display: "flex",
+    flexDirection: "column",
+    marginBottom: 100,
+    height: "60%",
   },
   title: {
     position: "absolute",
